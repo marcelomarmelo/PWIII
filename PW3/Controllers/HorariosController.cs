@@ -2,7 +2,7 @@
 
 namespace PW3.Controllers
 {
-    public class HorariosControllers : Controller
+    public class HorariosController : Controller
     {
         public IActionResult Index()
         {
