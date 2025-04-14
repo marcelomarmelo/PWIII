@@ -1,10 +1,17 @@
-﻿<form action="" method="post">
+﻿@model LoginModel
+
+<form action="" method="get">
 	<label> email</label>
-	<input type="email" name="email" value=""/>
+	<input type="email" name="Login" value=""/>
 	<br></br>
 	<label>Senha</label>
-	<input type="password" name="senha" value="" />
+	<input type="password" name="Senha" value="" />
 	<br><br />
 	<button type="submit" class="btn btn-primary"> Logar
 		</button>
 </form>
+
+
+<h1>@Model.Login</h1>
+
+<h1>@Model.Senha</h1>
