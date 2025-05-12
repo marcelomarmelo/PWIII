@@ -34,3 +34,18 @@
         }
     </tbody>
 </table>
+
+                <button id="botao" onclick="Piscar()" >
+                    Clique aqui para piscar
+                </button>
+                <script>
+                    function Piscar(){
+                        var botao = document.getElementById("botao")
+                        if(botao.style.backgroundColor =='red'){
+                            botao.style.backgroundColor = 'blue'
+                        }
+                        else{
+                            botao.style.backgroundColor = 'red'
+                        }
+                    }
+                </script>
