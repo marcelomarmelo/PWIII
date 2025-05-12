@@ -2,6 +2,7 @@
 using MySql.Data.MySqlClient;
 using PW3.Entidades;
 using System.Collections.Generic;
+
 namespace PW3.Controllers
 {
     public class UsuariosController : Controller
@@ -9,6 +10,7 @@ namespace PW3.Controllers
         private readonly string connectionString = "Server=localhost;Database=aulabd2;Uid=root;Pwd=;";
         public IActionResult Index()
         {
+            
             List<UsuarioEntidade> model = new List<UsuarioEntidade>();
 
             using var connection = new MySqlConnection(connectionString);
