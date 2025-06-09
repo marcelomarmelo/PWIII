@@ -2,6 +2,9 @@
 using Microsoft.AspNetCore.Mvc;
 using MySql.Data.MySqlClient;
 using PW3.Entidades;
+using MySqlX.XDevAPI;
+
+
 namespace PW3.Controllers
 {
     public class DisciplinasController : Controller
@@ -68,19 +71,43 @@ namespace PW3.Controllers
         // GET: DisciplinasController/Edit/5
         public ActionResult Edit(int id)
         {
-            return View();
+            DisciplinaEntidade model = new DisciplinaEntidade();
+            using var connection = new MySqlConnection(connectionString);
+            connection.Open();
+            var comando = new MySqlCommand("SELECT id, nome FROM disciplinas where Id = ?", connection);
+            comando.Parameters.AddWithValue("?", id);
+            using var reader = comando.ExecuteReader();
+            while (reader.Read())
+            {
+                model.Id = reader.GetInt32("id");
+                model.Nome = reader.GetString("nome");
+            }
+            connection.Close();
+            return View(model);
+
         }
 
         // POST: DisciplinasController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public ActionResult Edit(DisciplinaEntidade dados)
         {
             try
             {
+                using (var connection = new MySqlConnection(connectionString)) 
+                {
+                    connection.Open();
+                    var comando = new MySqlCommand(@"update Disciplinas
+                        set Nome = @nome where Id = @id", connection);
+                    comando.Parameters.AddWithValue("@nome", dados.Nome);
+                    comando.Parameters.AddWithValue("@id", dados.Id);
+                    comando.ExecuteNonQuery();
+
+                    connection.Close();
+                }
                 return RedirectToAction(nameof(Index));
             }
-            catch
+            catch (Exception ex)
             {
                 return View();
             }
@@ -89,19 +116,42 @@ namespace PW3.Controllers
         // GET: DisciplinasController/Delete/5
         public ActionResult Delete(int id)
         {
-            return View();
+            DisciplinaEntidade model = new DisciplinaEntidade(); 
+            using var connection = new MySqlConnection(connectionString);
+            connection.Open();
+            var comando = new MySqlCommand("SELECT id, nome FROM disciplinas where Id = ?", connection);
+            comando.Parameters.AddWithValue("?", id);
+            using var reader = comando.ExecuteReader();
+            while (reader.Read())
+            {
+                model.Id = reader.GetInt32("id");
+                model.Nome = reader.GetString("nome");
+            }
+            connection.Close();
+            return View(model);
         }
 
         // POST: DisciplinasController/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
+        public ActionResult Delete(DisciplinaEntidade dados)
         {
             try
             {
+                using (var connection = new MySqlConnection(connectionString)) 
+                {
+                    connection.Open();
+                    var comando = new MySqlCommand(@"delete from Disciplinas
+                        where Id = @id", connection);
+
+                    comando.Parameters.AddWithValue("@id", dados.Id);
+                    comando.ExecuteNonQuery();
+
+                    connection.Close();
+                }
                 return RedirectToAction(nameof(Index));
             }
-            catch
+            catch (Exception ex)
             {
                 return View();
             }
